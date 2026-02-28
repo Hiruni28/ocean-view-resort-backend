@@ -21,14 +21,19 @@ public class AdminController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Setter
-    @Getter
+    @Setter @Getter
     public static class LoginRequest {
         private String username;
         private String password;
-
     }
 
+    @Setter @Getter
+    public static class ResetPasswordRequest {
+        private String username;
+        private String newPassword;
+    }
+
+    // ------------------- LOGIN -------------------
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
@@ -39,19 +44,31 @@ public class AdminController {
 
         if (success) {
             String token = jwtUtil.generateToken(request.getUsername());
-
-            System.out.println("JWT TOKEN = " + token); //  PRINT
-
             return ResponseEntity.ok(token);
-        }
-        else {
+        } else {
             return ResponseEntity.status(401).body("INVALID_CREDENTIALS");
         }
     }
-    @GetMapping
-    public List<Admin> getAllAdmins(){
-        return adminService.getAllAdmins();
+
+    // ------------------- RESET PASSWORD -------------------
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+
+        boolean updated = adminService.resetPassword(
+                request.getUsername(),
+                request.getNewPassword()
+        );
+
+        if (updated) {
+            return ResponseEntity.ok("PASSWORD_UPDATED");
+        } else {
+            return ResponseEntity.status(404).body("USER_NOT_FOUND");
+        }
     }
 
+    // ------------------- GET ALL -------------------
+    @GetMapping
+    public List<Admin> getAllAdmins() {
+        return adminService.getAllAdmins();
+    }
 }
-
