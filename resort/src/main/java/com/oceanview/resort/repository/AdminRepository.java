@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
 
-    // (Optional) Used only if you want JPA login
     Admin findByUsernameAndPassword(String username, String password);
-
-    // For JPA lookup by username
     Admin findByUsername(String username);
 }

@@ -1,6 +1,5 @@
 package com.oceanview.resort.controller;
 
-
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import com.oceanview.resort.model.Staff;

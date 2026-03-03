@@ -4,6 +4,7 @@ import com.oceanview.resort.model.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -12,7 +13,7 @@ public class AdminService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // ------------------ LOGIN ------------------
+    // -------- LOGIN --------
     public boolean login(String username, String password) {
         try {
             String sql = "SELECT COUNT(*) FROM admin WHERE username = ? AND password = ?";
@@ -22,15 +23,17 @@ public class AdminService {
                     Integer.class
             );
             return count != null && count > 0;
+
         } catch (Exception e) {
             System.out.println("ERROR in AdminService.login(): " + e.getMessage());
             return false;
         }
     }
 
-    // ------------------ GET ALL ADMINS ------------------
+    // -------- GET ALL --------
     public List<Admin> getAllAdmins() {
         String sql = "SELECT * FROM admin";
+
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Admin admin = new Admin();
             admin.setId(rs.getInt("id"));
@@ -40,12 +43,13 @@ public class AdminService {
         });
     }
 
-    // ------------------ RESET PASSWORD ------------------
+    // -------- RESET PASSWORD --------
     public boolean resetPassword(String username, String newPassword) {
         try {
             String sql = "UPDATE admin SET password = ? WHERE username = ?";
             int result = jdbcTemplate.update(sql, newPassword, username);
-            return result > 0;  // True if password updated
+            return result > 0;
+
         } catch (Exception e) {
             System.out.println("ERROR in AdminService.resetPassword(): " + e.getMessage());
             return false;

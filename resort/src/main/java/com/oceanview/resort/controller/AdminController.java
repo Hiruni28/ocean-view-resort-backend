@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class AdminController {
 
     @Autowired
@@ -21,6 +21,7 @@ public class AdminController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    // ---------- DTO (Inner Classes) ----------
     @Setter @Getter
     public static class LoginRequest {
         private String username;
@@ -33,7 +34,7 @@ public class AdminController {
         private String newPassword;
     }
 
-    // ------------------- LOGIN -------------------
+    // ---------- LOGIN ----------
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
@@ -50,7 +51,7 @@ public class AdminController {
         }
     }
 
-    // ------------------- RESET PASSWORD -------------------
+    // ---------- RESET PASSWORD ----------
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
 
@@ -66,7 +67,7 @@ public class AdminController {
         }
     }
 
-    // ------------------- GET ALL -------------------
+    // ---------- GET ALL ----------
     @GetMapping
     public List<Admin> getAllAdmins() {
         return adminService.getAllAdmins();
